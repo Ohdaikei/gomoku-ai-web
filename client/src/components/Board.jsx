@@ -115,7 +115,7 @@ export default function Board() {
   const getAIMove = async (currentBoard) => {
     console.log("getAI呼ばれたよ");
     try {
-        const response = await fetch("https://gomoku-ai-web-server.onrender.com/ai-move", {
+        const response = await fetch("http://localhost:5001/ai-move", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -151,20 +151,29 @@ export default function Board() {
     }
 
     const aiMove = await getAIMove(newBoard);
+    console.log("AIの手:", aiMove);
 
-    if (!aiMove) return;
+
+
+    if (!aiMove || aiMove.x === -1 || aiMove.y === -1) {
+      console.log("AIが打てる手がないです、またはエラー");
+      return;
+    }
 
     const { x: aiX, y: aiY } = aiMove;
-    if (newBoard[aiX][aiY] !== null) return;
+    if (newBoard[aiY][aiX] !== null) {
+      console.error("AIがすでに埋まってるマスにうとうとしている");
+      return;
+    }
 
     const nextBoard = newBoard.map((row) => row.slice());
     nextBoard[aiY][aiX] = aiColor;
     setBoard(nextBoard);
 
-    if (checkWin(nextBoard, aiX, aiY, isBlackTurn ? "white" : "black")) {
+    if (checkWin(nextBoard, aiX, aiY, aiColor)) {
         setWinner(aiColor);
     } else {
-        setIsBlackTurn(isBlackTurn);
+        setIsBlackTurn(true);
     }
   };
 

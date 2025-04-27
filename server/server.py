@@ -19,11 +19,12 @@ def ai_move():
 
     ai = AI(game.state())
 
-    move, _ = ai.mcts_search()
+    move, score = ai.choose_best_move()
 
     if move is None:
         return jsonify({"x" : -1, "y" : -1})
-    
+    print("Debug: move =", move)
+    print("DEBUG: score = ", score)
     x, y = move
     return jsonify({"x" : x, "y" : y})
 
