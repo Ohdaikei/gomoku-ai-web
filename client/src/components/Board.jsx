@@ -115,7 +115,7 @@ export default function Board() {
   const getAIMove = async (currentBoard) => {
     console.log("getAI呼ばれたよ");
     try {
-        const response = await fetch("https://gomoku-ai-web-server.onrender.com", {
+        const response = await fetch("https://gomoku-ai-web-server.onrender.com/ai-move", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
